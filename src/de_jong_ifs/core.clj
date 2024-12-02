@@ -22,21 +22,21 @@
                       y0 (rand)]
                   (iterate transform [x0 y0]))
    :frame-count 0
-   :a 2.4
-   :b -0.9
-   :g 1.8
-   :d -1.2
+   :a 2
+   :b -2
+   :g 2
+   :d -2
    :points []})
 
 (defn update-state [state]
-  (let [new-points (take 50000 (:de-jong-ifs state))]
+  (let [new-points (take 100 (:de-jong-ifs state))]
     (-> state
         (update :frame-count inc)
         (assoc :points (concat (:points state) new-points))  ;; Accumulate points
-        (update :a #(mod (+ % 0.01) 3))
-        (update :b #(mod (+ % 0.01) 1))
-        (update :g #(mod (+ % 0.01) 3))
-        (update :d #(mod (+ % 0.01) 1)))))
+        (update :a #(mod (+ % 0.01) 100))
+        (update :b #(mod (+ % 0.01) 100))
+        (update :g #(mod (- % 0.01) 100))
+        (update :d #(mod (- % 0.01) 100)))))
 
 (defn draw [state]
   ; access state data
@@ -49,7 +49,7 @@
         oscillation (* 100 (q/sin (/ frame-count 20)))]
     ;(q/background 240)
     (q/with-translation [(+ (/ (q/width) 2) oscillation) (/ (q/height) 2) ]
-                        (let [points 1000
+                        (let [points 500
                               scale 150]
                           (doseq [[x y] (take points (iterate #(transform % a
                            b g d) (first de-jong-ifs)))]
