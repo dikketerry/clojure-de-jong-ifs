@@ -1,11 +1,7 @@
 (ns de-jong-ifs.core
   (:require [quil.core :as q]
-            [quil.middleware :as m]))
-
-;(def a 2.0)
-;(def b -2.0)
-;(def g 2.0)
-;(def d -2.0)
+            [quil.middleware :as m])
+  (:import [java.awt GraphicsEnvironment]))
 
 (defn transform [[x y] a b g d]
   [(- (q/sin (* a y)) (q/cos (* b x)))
@@ -22,10 +18,10 @@
                       y0 (rand)]
                   (iterate transform [x0 y0]))
    :frame-count 0
-   :a 2
-   :b -2
-   :g 2
-   :d -2
+   :a 0.97
+   :b -1.90
+   :g 1.38
+   :d -1.4142
    :points []})
 
 (defn update-state [state]
@@ -61,7 +57,7 @@
              :update update-state
              :draw draw
              :size [800 800]
-             :features [:keep-on-top]
+             :features [:keep-on-top :single-threaded]
              :middleware [m/fun-mode])
 
 (defn -main [& args])
